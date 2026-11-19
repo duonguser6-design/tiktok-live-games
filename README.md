@@ -1,13 +1,15 @@
 # TikTok LIVE Games — Năm lớp phủ (overlay) gốc chạy cục bộ
 
-Năm trò chơi lớp phủ tương tác gốc, nhịp độ chậm, dùng chung một lõi
-cục bộ: **Sunrise Lake**, **Firefly Garden**, **Starlight Observatory**,
-**Cozy Corner Cafe** và **Balloon Sky**. Một lượt follow sẽ thêm một
-hình ảnh trực quan bền vững, mang tên của người xem đó. Bình luận sẽ
-kích hoạt các hành động nhỏ cố định. Lượt like sẽ làm đầy một thước
-cảnh chung. Quà tặng sẽ thêm một vật trang trí cố định.
-Mỗi hành động chỉ làm đúng những việc đó, và lớp phủ cũng ghi rõ điều
-này trên màn hình.
+Năm trò chơi lớp phủ tương tác gốc dùng chung một lõi cục bộ:
+**Sunrise Lake**, **Firefly Garden**, **Starlight Observatory**,
+**Cozy Corner Cafe** và **Balloon Sky**. **Sunrise Lake** là trò chơi
+chủ lực, đã được dựng lại thành cảnh 3D thật (Three.js, 16 ghế quanh
+hồ); bốn trò chơi còn lại vẫn là cảnh 2D, nhịp độ chậm, 48 vị trí mỗi
+phiên. Một lượt follow sẽ thêm một hình ảnh trực quan bền vững, mang
+tên của người xem đó. Bình luận sẽ kích hoạt các hành động nhỏ cố
+định. Lượt like sẽ làm đầy một thước cảnh chung. Quà tặng sẽ thêm một
+vật trang trí cố định. Mỗi hành động chỉ làm đúng những việc đó, và
+lớp phủ cũng ghi rõ điều này trên màn hình.
 
 Bản build này được thiết kế **thận trọng về chính sách
 (policy-cautious)**. Không bao giờ mô tả bản build này là "fully compliant" — cách diễn đạt đó là sai. Hãy đọc phần đồng thuận về rủi ro bên dưới trước bất kỳ lần sử dụng trực tiếp nào.
@@ -44,7 +46,7 @@ Bản build này được thiết kế **thận trọng về chính sách
 
 **Trạng thái bộ chuyển đổi live: CHƯA ĐƯỢC XÁC MINH (UNVERIFIED).** Bộ chuyển đổi sự kiện live chưa từng được chạy với một phiên TikTok LIVE thật. Nó được nối dây theo API đã được ghi chép của thư viện và chỉ được kiểm thử bằng các kết nối giả lập (mock) và các sự kiện mô phỏng. Hãy coi những lần chạy LIVE thật đầu tiên như các lần kiểm thử: diễn tập ở chế độ mô phỏng (simulator), rồi kiểm thử trực tiếp khi bảng điều khiển đang mở và công tắc ngắt (kill-switch) đã sẵn sàng.
 
-**Quy tắc người sáng tạo phải xuất hiện trên camera (bắt buộc).** Người sáng tạo phải có mặt và xuất hiện trên màn hình trong suốt bất kỳ buổi phát trực tiếp nào sử dụng các lớp phủ này. Không bao giờ chạy trò chơi mà không có người trông coi, chạy lặp lại, hoặc phát trên đoạn phim quay sẵn rồi trình bày như đang phát trực tiếp. Lớp phủ chừa một cửa sổ camera ở phía trên cho nguồn camera của người sáng tạo (xem phần thiết lập OBS).
+**Quy tắc người sáng tạo phải xuất hiện trên camera (bắt buộc).** Người sáng tạo phải có mặt và xuất hiện trên màn hình trong suốt bất kỳ buổi phát trực tiếp nào sử dụng các lớp phủ này. Không yêu cầu phải nói — chỉ cần xuất hiện trên camera. Không bao giờ chạy trò chơi mà không có người trông coi, chạy lặp lại, hoặc phát trên đoạn phim quay sẵn rồi trình bày như đang phát trực tiếp. Lớp phủ chừa một cửa sổ camera ở phía trên cho nguồn camera của người sáng tạo (xem phần thiết lập OBS).
 
 ## Năm trò chơi
 
@@ -55,7 +57,7 @@ chung được giữ nguyên khi chuyển đổi; các hoạt ảnh đang xếp 
 
 | Trò chơi | Follow thêm | Thước like | Trang trí từ quà tặng |
 |---|---|---|---|
-| Sunrise Lake | Một chiếc thuyền mang tên, có người câu cá ở bến tàu | Thước thủy triều | Đèn lồng (Lantern), hoa (blossom), mũ nắng (sun hat), cờ (flag), charm hình cá (fish charm), phao câu (bobber) |
+| Sunrise Lake | Một ghế câu mang tên quanh hồ (tối đa 16 ghế, cảnh 3D) | Chu kỳ like 50/150/300/500/800/1200, lặp lại sau mỗi lần nghỉ 2 phút | Đèn lồng (Lantern), hoa (blossom), mũ nắng (sun hat), cờ (flag), charm hình cá (fish charm) |
 | Firefly Garden | Một bông hoa phát sáng mang tên, có một con đom đóm | Thước ánh trăng | Bướm (Butterfly), đèn lồng (lantern), giọt sương (dew drop), nấm (mushroom), bông hoa (bloom), đom đóm (firefly) |
 | Starlight Observatory | Một ngôi sao mang tên trong chòm sao | Thước cực quang | Sao chổi (Comet), vệ tinh (satellite), charm hình mặt trăng (moon charm), đèn lồng hình sao (star lantern), dải cực quang (aurora ribbon) |
 | Cozy Corner Cafe | Một chú mèo mang tên ở chỗ ngồi bên cửa sổ, kèm một tách đồ uống | Thước hơi ấm | Cây cảnh (Plant), nến (candle), bảng thực đơn (menu board), tách trà (teacup), ngôi sao cửa sổ (window star) |
@@ -63,23 +65,23 @@ chung được giữ nguyên khi chuyển đổi; các hoạt ảnh đang xếp 
 
 ### Cốt truyện & hình ảnh
 
-Mỗi trò chơi kể một câu chuyện hình ảnh nhỏ. Các nhịp (beat) chỉ tiến
-triển từ các ngưỡng của thước like chung và từ các lượt follow mới đến.
-Giữa các sự kiện, khung cảnh chuyển động chậm rãi: ba lớp gờ núi trôi
+Mỗi trò chơi kể một câu chuyện hình ảnh nhỏ. Các nhịp (beat) chỉ thay
+đổi khi thước like chung chạm một ngưỡng đã công bố, hoặc khi có lượt
+follow mới đến. Giữa các sự kiện, khung cảnh chuyển động chậm rãi: ba lớp gờ núi trôi
 dạt tạo hiệu ứng thị sai (parallax), sự sống trên bầu trời theo từng
 chủ đề (dải mây, hàng cây, dải Ngân Hà, đèn dây của quán cà phê),
 các hạt được tái sử dụng (pooled), và chuyển động đu đưa nhẹ nhàng
 giữ cho khung cảnh sống động mà không đòi hỏi sự chú ý. Các hình ảnh
 mới xuất hiện nhẹ nhàng với một vòng sáng và một quầng hào quang; tên
-nằm trên các viên thuốc tối dễ đọc; không có chỗ nào nhấp nháy. Bầu
-trời thay đổi theo giai đoạn của thước (0–6) — sương sớm tan dần trên
-mặt hồ, tia trăng trong vườn sáng hơn, cực quang của đài quan sát mạnh
-hơn, ánh đèn quán cà phê ấm dần, một vòng cầu vồng xuất hiện trên đội
-khinh khí cầu ở mốc cuối cùng — vì vậy việc ở lại để xem nhịp hình ảnh
-tiếp theo là phần thưởng duy nhất cho việc ở lại. Không có đếm ngược,
-không có cảnh báo mất mát, không có chuỗi liên tiếp (streak), và không
-có gì hàm ý rằng việc ở lại, follow hay tặng quà sẽ thay đổi bất cứ
-điều gì có thật.
+nằm trên các viên thuốc tối dễ đọc; không có chỗ nào nhấp nháy. Ở bốn
+trò chơi 2D, bầu trời thay đổi theo giai đoạn của thước (0–6) — tia
+trăng trong vườn sáng hơn, cực quang của đài quan sát mạnh hơn, ánh
+đèn quán cà phê ấm dần, một vòng cầu vồng xuất hiện trên đội khinh khí
+cầu ở mốc cuối cùng. Ở Sunrise Lake 3D, bầu trời thay đổi theo lịch
+cảnh 12 phút một cảnh (xem mục Sunrise Lake bên dưới). Không có đếm
+ngược, không có cảnh báo mất mát, không có chuỗi liên tiếp (streak),
+và không có gì hàm ý rằng việc ở lại, follow hay tặng quà sẽ thay đổi
+bất cứ điều gì có thật.
 
 **Giảm chuyển động (Reduced motion).** Bảng điều khiển có một nút bật/tắt
 giảm chuyển động, và lớp phủ cũng tự động tuân theo thiết lập
@@ -89,12 +91,88 @@ nhưng chuyển động nhẹ nhàng hơn: ít hạt hơn, không có lớp trô
 không có sao băng, và các hình ảnh mới mờ dần tại chỗ thay vì bay lên
 cùng một vòng sáng.
 
-**Sunrise Lake — bình minh ló rạng trên một mặt hồ yên tĩnh.** Cộng đồng
-đánh thức mặt hồ. Bảng màu: xanh dương đậm của đêm ấm dần thành vàng.
-Các nhịp của thước: ánh sáng đầu tiên trên mặt nước (100), gợn sóng lan
-rộng (500), ánh bình minh (1000), một đàn cá bơi qua (2500), giờ vàng
-(5000), bình minh trọn vẹn (10000). Các hạt: cánh hoa trôi và tia sáng
-lấp lánh trên mặt nước. Lệnh: `!cast`, `!bait`, `!wave`, `!hide`.
+**Sunrise Lake — cảnh 3D thật quanh một mặt hồ (trò chơi chủ lực).**
+Cảnh được vẽ bằng Three.js 0.187.0, bản build được đóng gói sẵn trong
+`public/vendor/` và phục vụ từ máy chủ cục bộ — không tải gì từ CDN.
+16 ghế câu xếp quanh hồ; một lượt follow thêm một ghế mang tên người
+đó. Khung cảnh luôn có việc đang diễn ra, ngay cả khi chưa có ai:
+nước chuyển động, cá bơi, gợn sóng, chim bay qua, ánh sáng đổi theo
+giờ trong ngày; ghế trống vẫn có một cần câu tựa sẵn, như đang chờ
+người ngồi; người câu đã ngồi thì vẫn cử động chậm theo vòng lặp
+(cần đung đưa, phao nhấp nhô, thỉnh thoảng quăng câu rồi thu dây).
+Lệnh: `!cast`, `!bait`, `!wave`, `!hide`.
+
+- **Thời gian chờ theo từng lệnh:** `!cast` 8 giây, `!wave` 8 giây,
+  `!bait` 10 giây; mỗi lệnh có thời gian chờ riêng, và mỗi người chỉ
+  có một lệnh đang chờ xử lý. Lệnh gửi trong thời gian chờ bị bỏ qua
+  lặng lẽ. Người xem chưa có ghế vẫn dùng được cả ba lệnh.
+- **Ba hình dạng cố định, thay đổi lặng lẽ:** lần đầu một người dùng
+  `!cast` trong phiên, cần câu của họ đổi sang hình dạng khác — cần
+  đẹp hơn, có guồng màu vàng; lần đầu dùng `!bait`, phao của họ phát
+  sáng kèm một xô mồi đặt cạnh ghế; lần đầu dùng `!wave`, một ô dù
+  sọc xuất hiện trên ghế của họ. Ba hình dạng này chỉ là ba vẻ ngoài
+  cố định, khác nhau khi nhìn thoáng qua; không có chữ, không có
+  thông báo, không có đếm số nào đi kèm. Follow không làm xuất hiện
+  hình dạng nào; like cũng không.
+- **Quà tặng:** mỗi người có một ô trang trí, quà mới thay ô cũ, giữ
+  trong suốt phiên. Chỉ có 5 loại được ánh xạ, theo loại quà (không
+  theo giá trị xu): đèn lồng, hoa, mũ nắng, cờ, charm hình cá; quà
+  không thuộc 5 loại này dùng đèn lồng mặc định. Phao câu không phải
+  một loại quà — phao là một phần của hình dạng `!bait` và đổi màu
+  theo kết quả bình chọn `!bait` (xem dưới).
+- **Chu kỳ like chung:** các mốc 50, 150, 300, 500, 800, 1200. Tới
+  1200 thì diễn ra đoạn kết (finale), sau đó cảnh nghỉ 2 phút rồi chu
+  kỳ lặp lại từ đầu. Like đến trong lúc nghỉ vẫn được cộng vào tổng
+  chung và được giữ lại để tính cho chu kỳ tiếp theo, không làm chạy
+  hiệu ứng mốc nào trong lúc nghỉ. Đoạn kết chạy tối đa một lần mỗi
+  3 phút; nếu đã tới mốc 1200 mà chưa đủ 3 phút kể từ đoạn kết trước,
+  đoạn kết được giữ lại một lần rồi chạy khi đủ thời gian.
+- **Sự kiện theo nhóm:** 3 người khác nhau cùng `!cast` trong 30 giây
+  thì một đàn cá bơi qua; mỗi người chỉ tính một lần trong một cửa sổ
+  30 giây, sau đó khóa 60 giây.
+- **Sự kiện nền:** trung bình một sự kiện hình ảnh nhỏ khoảng mỗi
+  8 giây (trong khoảng 6–10 giây), chỉ là hình ảnh, không gắn với
+  người xem nào.
+- **Lịch cảnh:** bình minh → buổi trưa → hoàng hôn → đêm đầy sao, mỗi
+  cảnh 12 phút (vòng 48 phút), chuyển cảnh mờ dần trong 20 giây.
+- **Bình chọn `!bait`:** 3 lựa chọn (Worm, Corn, Berry), mỗi vòng 90
+  giây. Mỗi `!bait` chuyển lá phiếu duy nhất của người đó sang lựa
+  chọn tiếp theo theo thứ tự (worm → corn → berry → worm…). Hết vòng,
+  lựa chọn được nhiều phiếu nhất thắng; hòa thì giữ lựa chọn hiện tại.
+  Kết quả chỉ đổi màu phao và đèn lồng.
+- **Dòng cảm ơn (thank-you ticker):** cứ 20 giây hiện tối đa 3 tên
+  mỗi lượt, theo thứ tự đến, mỗi người một lần trong mỗi phiên, kể cả
+  người follow khi đã hết ghế; tên đã ẩn được bỏ qua.
+- **Bảng HOW TO PLAY trên lớp phủ:** bốn dòng chữ, mô tả đúng nghĩa
+  đen của từng lệnh kèm thời gian chờ (`!cast`: cast your line, 8s;
+  `!bait`: vote for bait, 10s; `!wave`: wave, 8s; `!hide`: hides your
+  name, không chờ). Bảng không nhắc tới follow hay quà tặng.
+- **4 phím nóng của người sáng tạo (chỉ là nút bấm thêm, không bắt
+  buộc):** phím 1 đàn cá, phím 2 cảnh tiếp theo, phím 3 tạm dừng/tiếp
+  tục, phím 4 tắt/bật tiếng; chung một giới hạn 1 thao tác mỗi 10
+  giây, bấm quá sớm bị bỏ qua. Mọi sự kiện trên đều có nhịp tự động
+  riêng, nên trò chơi chạy trọn vẹn mà không cần bấm phím nào.
+- **Hết 16 ghế:** người follow thứ 17 chỉ thấy dòng toast "All 16
+  seats are full — thank you!" và không có hình ảnh nào khác; tên của
+  họ vẫn vào dòng cảm ơn.
+- **Dự phòng tĩnh khi không có WebGL:** nếu trình duyệt không có
+  WebGL, tải mô-đun Three.js thất bại, hoặc ngữ cảnh WebGL bị mất
+  giữa buổi, lớp phủ vẽ một cảnh tĩnh 2D (dải màu trời, mặt hồ, lau
+  sậy, ghế với tên) và vẽ lại mỗi khi có bản chụp nhanh mới; bảng HOW
+  TO PLAY, dòng cảm ơn, toast, thước đo và chân trang vẫn hoạt động.
+
+### Vận hành tự động — streamer không cần nói hay bấm gì
+
+Sunrise Lake 3D tự chạy hoàn toàn: sự kiện nền theo hẹn giờ, sự kiện
+nhóm theo lệnh của người xem, lịch cảnh theo giờ, vòng bình chọn theo
+giờ, dòng cảm ơn theo giờ, hình dạng đổi lặng lẽ theo lệnh đầu tiên
+của từng người. Streamer không cần nói gì — không có lời mời nói ra
+nào trong bản build này — và không cần bấm phím nóng nào. Yêu cầu duy
+nhất còn lại đối với streamer là **xuất hiện trên camera trong suốt
+buổi phát** (xem quy tắc ở đầu README này); không có yêu cầu phải nói.
+Sự chú ý của người xem đến từ chính những gì đang diễn ra trên màn
+hình, không phải từ lời nói của streamer. Các phím nóng chỉ là nút
+bấm thêm khi streamer muốn can thiệp; trò chơi không chờ chúng.
 
 **Firefly Garden — một khu vườn đang ngủ bừng nở thành ánh sáng.** Vườn
 đêm, đom đóm, sương đọng. Bảng màu: đêm chàm ấm dần thành xanh lá của
@@ -132,7 +210,27 @@ tên của chính người xem đó trên màn hình (gửi lại lần nữa đ
 trở lại). Nó được miễn thời gian chờ (cooldown) nên việc ẩn tên luôn
 có hiệu lực ngay lập tức.
 
+**`!hide` và rủi ro trùng tên sau khi khởi động lại (đã biết, còn tồn
+tại).** Một vị trí đã ẩn sẽ khôi phục lại ở trạng thái ẩn ngay khi tải
+bản chụp nhanh, không cần người xem làm gì thêm. Nhưng sau khi khởi
+động lại, chỉ riêng tên không thể phân biệt hai người xem cùng tên —
+id người dùng không bao giờ được ghi ra đĩa — nên rủi ro sau vẫn còn:
+nếu A đã ẩn tên rồi máy chủ khởi động lại, và B (người xem khác, cùng
+tên hiển thị với A) gửi một hành động, B sẽ gắn vào vị trí đã khôi
+phục của A theo khớp tên, B thừa hưởng trạng thái ẩn đó, và lần
+`!hide` tiếp theo của B sẽ **hiện** vị trí đó lên thay vì ẩn. Đây là
+hạn chế còn tồn tại của việc khớp theo tên, đã được ghi lại bằng một
+kiểm thử đặt tên rõ ràng (`RESIDUAL SAME-NAME RISK` trong
+`test/gameState3d.test.js`); cách duy nhất để gỡ nó là lưu id người
+dùng, điều mà các quy tắc riêng tư của bản build này không cho phép.
+
 ### Mỗi hành động làm gì (cũng hiển thị trên màn hình)
+
+Các điểm dưới đây mô tả bốn trò chơi 2D. Sunrise Lake 3D dùng các số
+riêng đã ghi trong mục Sunrise Lake ở trên: 16 ghế thay vì 48 vị trí,
+thời gian chờ riêng theo từng lệnh (`!cast` 8 giây / `!wave` 8 giây /
+`!bait` 10 giây), chu kỳ like 50/150/300/500/800/1200 lặp lại, và một
+ô trang trí cho mỗi người.
 
 - **Follow:** hình ảnh mang tên của người follow tham gia khung cảnh
   với một hoạt ảnh cảm ơn ngắn. Một hình ảnh cho mỗi người xem trong
@@ -168,12 +266,16 @@ Các thông báo công khai luôn hiển thị trên mọi lớp phủ:
 
 ### Dung lượng và chính sách hàng đợi
 
-- **48 vị trí (spot)** cho mỗi phiên. Khi cả 48 vị trí đã đầy, một lượt
+- **48 vị trí (spot)** cho mỗi phiên ở bốn trò chơi 2D. Khi cả 48 vị trí đã đầy, một lượt
   follow tiếp theo sẽ **không có hình ảnh** — lớp phủ hiển thị một
   thông báo ngắn (toast) với nội dung "All 48 spots are full — thank you!" và không gì khác. Người follow thứ
   49 không được hứa hẹn một chiếc thuyền, bông hoa, ngôi sao, chỗ ngồi
   hay khinh khí cầu, trên màn hình hay ở bất cứ nơi nào khác. Số lượng
   vị trí hiển thị trong bảng điều khiển.
+- **Sunrise Lake 3D: 16 ghế.** Khi cả 16 ghế đã đầy, người follow
+  tiếp theo chỉ thấy dòng toast "All 16 seats are full — thank you!"
+  và không có hình ảnh nào khác; tên của họ vẫn vào dòng cảm ơn
+  (thank-you ticker).
 - **Giới hạn hàng đợi hoạt ảnh là 100.** Khi đầy, một hoạt ảnh mới sẽ
   thay thế hoạt ảnh cũ có mức ưu tiên thấp nhất (follow > gift >
   command > ambient); nếu mục mới không có mức ưu tiên cao hơn, nó sẽ
@@ -297,7 +399,10 @@ Manual / mod control panel ------------------------------------------> manual --
   người follow quay lại vẫn còn đó sau khi khởi động lại trong thời
   gian TTL, được gắn lại theo khớp tên đã lọc khi họ follow, gửi lệnh
   hoặc tặng quà lần tiếp theo. `!hide` vẫn hoạt động sau khi khởi động
-  lại theo cùng cách. Id người dùng và văn bản bình luận không bao giờ
+  lại theo cùng cách. Ở Sunrise Lake 3D, bản chụp nhanh còn giữ chu kỳ
+  like, cảnh đang chạy, lựa chọn bình chọn `!bait` đang thắng, dòng cảm
+  ơn (kể cả vị trí đã đọc tới đâu) và ba hình dạng của từng người — tất
+  cả đều khôi phục qua một lần khởi động lại từ tệp thật. Id người dùng và văn bản bình luận không bao giờ
   được ghi vào đĩa, không bao giờ được ghi nhật ký, và không bao giờ
   được phát đi.
 - **Máy chủ** (`src/server.js`): Node `http` + `ws`, chỉ liên kết với
@@ -308,8 +413,10 @@ Manual / mod control panel ------------------------------------------> manual --
 - **Lớp phủ** (`public/`): hình ảnh HTML/Canvas gốc, 1080×1920, nền
   trong suốt, giới hạn 30fps. Mọi hình ảnh được vẽ bằng mã (các gradient
   được lưu vào bộ nhớ đệm; các hạt được tái sử dụng), vì vậy các phiên
-  dài không làm tích lũy bộ nhớ trong trang. Các tệp âm thanh được phục
-  vụ bởi cùng một máy chủ cục bộ (`/audio/*`, chỉ cho phép theo danh
+  dài không làm tích lũy bộ nhớ trong trang. Sunrise Lake 3D vẽ bằng
+  WebGL qua Three.js đã đóng gói sẵn trong `public/vendor/` (không CDN);
+  khi WebGL không có sẵn, lớp phủ vẽ cảnh tĩnh 2D thay thế và HUD vẫn
+  hoạt động. Các tệp âm thanh được phục vụ bởi cùng một máy chủ cục bộ (`/audio/*`, chỉ cho phép theo danh
   sách trong manifest) — lớp phủ không tải gì từ internet khi chạy.
 - **Âm thanh** (`assets/audio/`, `src/audio.js`): manifest là nguồn duy
   nhất đáng tin cậy cho các tệp, ánh xạ chủ đề→vòng nhạc và sự
@@ -380,6 +487,16 @@ phút, trong trình duyệt thật và trong OBS:
 6. Làm mới khóa luồng RTMP mỗi lần phát sóng nếu phát qua RTMP,
    hoặc dùng OBS Virtual Camera vào LIVE Studio. Không bao giờ để lộ
    máy chủ cục bộ hay bất kỳ websocket OBS nào ra internet.
+
+### Máy tính không có camera — dùng điện thoại làm webcam
+
+Nếu máy tính không có camera, dùng điện thoại làm nguồn camera: cài
+một ứng dụng biến điện thoại thành webcam (DroidCam, Camo hoặc Iriun
+— đều có bản dùng không mất phí), nối điện thoại với máy tính theo
+hướng dẫn của ứng dụng, rồi thêm nguồn webcam đó vào OBS và đặt bên
+dưới nguồn lớp phủ như ở bước 2. TikTok LIVE yêu cầu 1.000 người theo
+dõi trở lên và đủ 18 tuổi (có thể khác nhau theo khu vực) thì mới mở
+được phát trực tiếp.
 
 ### Chọn trò chơi
 
@@ -545,16 +662,22 @@ tải hình ảnh bên ngoài và mạo danh avatar).
 
 ## Kiểm thử
 
-- `npm test` — 141 kiểm thử tự động: chuẩn hóa, loại trùng lặp, lùi
+- `npm test` — 202 kiểm thử tự động: chuẩn hóa, loại trùng lặp, lùi
   dần (backoff), chính sách hàng đợi, lọc tên, quy tắc trò chơi, cấu
   hình và kết xuất theo từng chủ đề, bộ chuyển đổi (kết nối live giả
   lập), máy chủ HTTP/WS, xử lý bản chụp nhanh, manifest/giấy phép/ánh
   xạ/thiết lập âm thanh và kiểm tra không tổng hợp, các tuyến HTTP âm
   thanh, kết xuất giảm chuyển động, bố cục chân trang, xác thực khôi
   phục bản chụp nhanh, hậu tố tên trùng lặp, !hide qua các lần khởi
-  động lại, quét câu chữ kêu gọi hành động (CTA), và kiểm tra không
-  nhấp nháy.
-- **Kiểm thử tự động không thay thế các kiểm tra thật.** 141/141 kiểm
+  động lại, quét câu chữ kêu gọi hành động (CTA), kiểm tra không
+  nhấp nháy, và 61 kiểm thử cho bản dựng lại Sunrise Lake 3D (thời
+  gian chờ theo lệnh, 16 ghế, hình dạng lặng lẽ, chu kỳ like, sự kiện
+  nhóm, lịch cảnh, bình chọn `!bait`, dòng cảm ơn, phím nóng, khôi
+  phục bản chụp nhanh từ tệp thật, rủi ro trùng tên còn tồn tại).
+  Chi tiết trong TEST-REPORT.md. Bản build này đã sẵn sàng để GPT xem
+  xét ở vòng tiếp theo; các quyết định đã chốt với Claude ở vòng 3
+  vẫn giữ nguyên như lịch sử đã ghi.
+- **Kiểm thử tự động không thay thế các kiểm tra thật.** 202/202 kiểm
   thử đạt có nghĩa là bộ kiểm thử tự động đạt — đó không phải bằng
   chứng trò chơi đã được xác minh đầy đủ. Việc kiểm tra trên trình
   duyệt thật/OBS, việc kiểm tra kết nối live, và lần chạy 8 giờ trong

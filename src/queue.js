@@ -58,6 +58,21 @@ export class AnimationQueue {
     this.items.splice(at, 0, entry);
   }
 
+  /** Remove the oldest queued item of the given kind, if any.
+   *  Oldest means the lowest arrival sequence, not the first slot in
+   *  the priority-ordered array. Returns the removed item or null. */
+  dropOldestByKind(kind) {
+    let at = -1;
+    for (let i = 0; i < this.items.length; i += 1) {
+      if (this.items[i].kind !== kind) continue;
+      if (at < 0 || this.items[i].seq < this.items[at].seq) at = i;
+    }
+    if (at < 0) return null;
+    const [dropped] = this.items.splice(at, 1);
+    this.dropped += 1;
+    return dropped;
+  }
+
   /** Take the next item if the minimum spacing has elapsed, else null. */
   next() {
     if (this.items.length === 0) return null;

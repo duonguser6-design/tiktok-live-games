@@ -85,6 +85,20 @@ test('HTTP: overlay, control panel, modules, and health serve; unknown paths 404
   const render = await fetch(`${base}/render.js`);
   assert.equal(render.status, 200);
   assert.ok((await render.text()).includes('renderScene'));
+  const render3d = await fetch(`${base}/render3d.js`);
+  assert.equal(render3d.status, 200);
+  assert.ok((await render3d.text()).includes('createLakeRenderer'));
+  const threeModule = await fetch(`${base}/vendor/three.module.js`);
+  assert.equal(threeModule.status, 200);
+  assert.ok((await threeModule.text()).includes('three.core.js'));
+  const threeCore = await fetch(`${base}/vendor/three.core.js`);
+  assert.equal(threeCore.status, 200);
+  assert.ok((await threeCore.text()).includes('REVISION'));
+  const lakeConfig = await fetch(`${base}/lake3d-config.js`);
+  assert.equal(lakeConfig.status, 200);
+  assert.ok((await lakeConfig.text()).includes('LAKE_3D'));
+  const vendorOther = await fetch(`${base}/vendor/three.cjs`);
+  assert.equal(vendorOther.status, 404); // allowlist: only the two vendored files serve
   const themes = await fetch(`${base}/themes.js`);
   assert.equal(themes.status, 200);
   assert.ok((await themes.text()).includes('balloon-sky'));

@@ -137,6 +137,11 @@ test('no synthesized audio: no tone-generation code in src, public, or scripts',
       const full = path.join(dir, entry.name);
       if (entry.isDirectory()) {
         if (entry.name === 'node_modules') continue;
+        // Vendored third-party Three.js: it ships WebAudio helper classes
+        // (THREE.Audio, AudioListener) that this project never calls —
+        // playback here is HTML Audio elements only. The guard below
+        // proves our own code never touches them.
+        if (entry.name === 'vendor') continue;
         await scan(full);
       } else if (/\.(js|html|sh)$/.test(entry.name)) {
         const text = await fs.readFile(full, 'utf8');
@@ -148,6 +153,24 @@ test('no synthesized audio: no tone-generation code in src, public, or scripts',
   }
   for (const dir of ['src', 'public', 'scripts']) await scan(path.join(ROOT, dir));
   assert.deepEqual(hits, [], `tone-generation code found: ${hits.join(', ')}`);
+  // Guard: our own code never uses Three.js WebAudio classes either.
+  const threeAudioHits = [];
+  async function scanOwn(dir) {
+    for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name === 'node_modules' || entry.name === 'vendor') continue;
+        await scanOwn(full);
+      } else if (/\.(js|html)$/.test(entry.name)) {
+        const text = await fs.readFile(full, 'utf8');
+        for (const token of ['THREE.Audio', 'AudioListener', 'PositionalAudio']) {
+          if (text.includes(token)) threeAudioHits.push(`${path.relative(ROOT, full)}: ${token}`);
+        }
+      }
+    }
+  }
+  for (const dir of ['src', 'public', 'scripts']) await scanOwn(path.join(ROOT, dir));
+  assert.deepEqual(threeAudioHits, [], `Three.js WebAudio use found: ${threeAudioHits.join(', ')}`);
   // Playback exists and uses HTML Audio elements only.
   const overlay = await fs.readFile(path.join(ROOT, 'public', 'overlay.js'), 'utf8');
   assert.ok(overlay.includes('new Audio()'), 'overlay does not use HTML Audio elements');

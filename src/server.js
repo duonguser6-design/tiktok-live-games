@@ -12,6 +12,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { WebSocketServer, WebSocket } from 'ws';
 import { HOST, METER_BROADCAST_MIN_INTERVAL_MS } from './config.js';
+import { LAKE_3D } from './lake3d-config.js';
 import { isValidTheme, THEME_IDS } from './themes.js';
 import { AUDIO_DEFAULTS, normalizeAudioSettings } from './audio.js';
 
@@ -35,6 +36,11 @@ export function createGameServer(options) {
 
   let mode = options.mode || 'simulator';
   let lastMeterBroadcast = 0;
+  // Creator hotkeys are optional overrides only: every lake event also
+  // fires automatically (group cast, scene schedule, like cycle, bait
+  // rounds, ticker timer). Shared limit: 1 hotkey action per 10s.
+  // Too-soon presses are ignored, never queued.
+  let lastHotkeyAt = 0;
   let snapshotTimer = null;
   let tickTimer = null;
   const overlays = new Set();
@@ -152,6 +158,27 @@ export function createGameServer(options) {
         audioSettings = normalizeAudioSettings(data.settings, audioSettings);
         break;
       }
+      case 'hotkey': {
+        const kind = data.kind;
+        if (!LAKE_3D.HOTKEYS.some((h) => h.id === kind)) break;
+        // school and scene are lake-only; pause and mute work anywhere.
+        if ((kind === 'school' || kind === 'scene')
+          && typeof gameState.isLake3D === 'function' && !gameState.isLake3D()) break;
+        const now = nowFn();
+        if (now - lastHotkeyAt < LAKE_3D.HOTKEY_LIMIT_MS) break;
+        lastHotkeyAt = now;
+        if (kind === 'school') gameState.triggerSchool();
+        else if (kind === 'scene') gameState.advanceScene();
+        else if (kind === 'pause') {
+          // Toggle. If killed, resume clears it too: the creator is
+          // present and choosing to resume, so intake restarts as well.
+          if (gameState.paused) void resume();
+          else gameState.pause();
+        } else if (kind === 'mute') {
+          audioSettings = normalizeAudioSettings({ muted: !audioSettings.muted }, audioSettings);
+        }
+        break;
+      }
       case 'setMode': {
         if (typeof data.mode === 'string') void setMode(data.mode);
         break;
@@ -194,7 +221,13 @@ export function createGameServer(options) {
     '/overlay': path.join(publicDir, 'overlay.html'),
     '/overlay.js': path.join(publicDir, 'overlay.js'),
     '/render.js': path.join(publicDir, 'render.js'),
+    '/render3d.js': path.join(publicDir, 'render3d.js'),
+    // Vendored Three.js browser build (local only, never a CDN). Only
+    // these two files serve: three.module.js imports ./three.core.js.
+    '/vendor/three.module.js': path.join(publicDir, 'vendor', 'three.module.js'),
+    '/vendor/three.core.js': path.join(publicDir, 'vendor', 'three.core.js'),
     '/themes.js': path.join(srcDir, 'themes.js'),
+    '/lake3d-config.js': path.join(srcDir, 'lake3d-config.js'),
     '/audio.js': path.join(srcDir, 'audio.js'),
   };
 

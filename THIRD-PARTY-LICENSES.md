@@ -19,7 +19,7 @@ tra (checksum) có trong `assets/audio/MANIFEST.json`.
 ## Dependency đã ghim phiên bản (pinned dependencies)
 
 Cây dependency đã ghim cho dự án này (lấy từ package-lock.json đã cài
-đặt, 60 gói, đã kiểm kê ngày 2026-11-19). Mã định danh giấy phép là
+đặt, 61 gói, đã kiểm kê ngày 2026-11-19). Mã định danh giấy phép là
 trường giấy phép riêng của từng gói. Toàn văn của các dependency trực
 tiếp được đính kèm trong licenses/; toàn văn của các gói bắc cầu nằm
 trong chính các gói npm của chúng.
@@ -78,6 +78,7 @@ trong chính các gói npm của chúng.
 | responselike | 4.0.2 | MIT |  |
 | rxjs | 7.8.2 | Apache-2.0 | https://github.com/reactivex/rxjs.git |
 | tagged-tag | 1.0.0 | MIT |  |
+| three | 0.187.0 | MIT | https://github.com/mrdoob/three.js.git |
 | tiktok-live-api-sdk | 0.4.0-beta1 | MIT | https://github.com/EulerStream/Euler-Api-Sdk |
 | tiktok-live-connector | 2.5.0 | AGPL-3.0-only | https://github.com/zerodytrash/TikTok-Live-Connector.git |
 | tiktok-live-proto | 0.2.4 | AGPL-3.0-only | https://github.com/isaackogan/TikTok-Webcast-Protobuf |
@@ -88,5 +89,10 @@ trong chính các gói npm của chúng.
 | ws | 8.23.0 | MIT | https://github.com/websockets/ws.git |
 
 Các dependency trực tiếp của dự án này: tiktok-live-connector (AGPL-3.0
-đã sửa đổi, xem NOTICE.md) và ws (MIT). Mọi gói còn lại đều là bắc cầu,
+đã sửa đổi, xem NOTICE.md), ws (MIT) và three (MIT, chỉ dùng cho lớp phủ
+3D của Sunrise Lake). Toàn văn giấy phép MIT của three nằm trong
+licenses/three-LICENSE.txt. Bản build three.module.js / three.core.js
+được đóng gói sẵn trong public/vendor/ (chép từ gói npm đã ghim bằng
+scripts/vendor-three.js) để lớp phủ chạy hoàn toàn nội bộ, không tải
+từ CDN. Mọi gói còn lại đều là bắc cầu,
 được kéo vào bởi thư viện sự kiện.

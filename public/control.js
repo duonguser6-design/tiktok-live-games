@@ -1,4 +1,5 @@
 import { THEMES, THEME_IDS, DISCLOSURES, getTheme } from './themes.js';
+import { LAKE_3D } from './lake3d-config.js';
 import { AUDIO_DEFAULTS, normalizeAudioSettings } from './audio.js';
 
 const GIFT_OPTIONS = [
@@ -77,6 +78,28 @@ function renderThemeButtons() {
   document.getElementById('overlay-link').textContent = `/overlay?theme=${currentTheme}`;
   fillCommandSelects();
 }
+
+function renderHotkeys() {
+  const wrap = document.getElementById('hotkey-buttons');
+  wrap.innerHTML = '';
+  for (const hotkey of LAKE_3D.HOTKEYS) {
+    const btn = document.createElement('button');
+    btn.textContent = hotkey.label;
+    btn.dataset.hotkey = hotkey.id;
+    btn.title = `Key ${hotkey.key}`;
+    btn.addEventListener('click', () => send({ action: 'hotkey', kind: hotkey.id }));
+    wrap.appendChild(btn);
+  }
+}
+
+// Creator hotkeys are optional overrides only: the game runs on its own
+// timers and triggers without them. Keys are ignored while typing.
+document.addEventListener('keydown', (event) => {
+  const tag = (event.target && event.target.tagName) || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  const hotkey = LAKE_3D.HOTKEYS.find((h) => h.key === event.key);
+  if (hotkey) send({ action: 'hotkey', kind: hotkey.id });
+});
 
 function logLine(text) {
   const log = document.getElementById('log');
@@ -175,3 +198,4 @@ wireTrigger('man', 'manual');
 document.getElementById('disclosures').textContent = DISCLOSURES.join(' ');
 fillGiftSelects();
 renderThemeButtons();
+renderHotkeys();

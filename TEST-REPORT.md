@@ -483,3 +483,163 @@ hình. Việc giữ chân trong bản build này chỉ đến từ cảnh dùng 
 - **Id/tên quà tặng thực.** Ánh xạ quà tặng đã được kiểm thử với các tên
   đại diện và không xác định; danh mục quà tặng trực tiếp chưa được tải
   (việc đó sẽ cần một kết nối trực tiếp).
+
+## Sunrise Lake 3D rebuild (2026-11-19)
+
+Bản dựng lại Sunrise Lake thành cảnh 3D thật (chỉ trò chơi chủ lực;
+bốn trò chơi còn lại giữ nguyên 2D). Các số dưới đây lấy từ
+`src/lake3d-config.js` (nguồn duy nhất cho các số của bản dựng lại).
+
+### Three.js đóng gói sẵn trong dự án
+
+- Three.js **0.187.0** (MIT), bản build trình duyệt được đóng gói sẵn
+  bằng `scripts/vendor-three.js` (`npm run vendor:three`) từ gói npm
+  đã ghim vào `public/vendor/`; lớp phủ không tải gì từ CDN.
+  SHA-256 đầy đủ (chạy lại ngày 2026-11-19, khớp giữa nguồn và bản
+  sao đã đóng gói):
+  - `public/vendor/three.module.js`:
+    `104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341`
+  - `public/vendor/three.core.js`:
+    `613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578`
+- Giấy phép: mục three trong THIRD-PARTY-LICENSES.md đã đúng
+  (0.187.0, MIT, `licenses/three-LICENSE.txt`) — đã xác minh, không
+  cần sửa.
+- `three.module.js` import `./three.core.js`, nên cả hai tệp phải đi
+  cùng nhau; máy chủ chỉ phục vụ đúng hai tệp này dưới `/vendor/`
+  (một tệp khác, ví dụ `/vendor/three.cjs`, trả 404 — đã kiểm thử).
+
+### Kiểm thử: 202/202 (141 cũ + 61 mới)
+
+`npm test` ngày 2026-11-19: **202 kiểm thử, 202 đạt, 0 lỗi**.
+61 kiểm thử mới: 33 trong `test/gameState3d.test.js` (thời gian chờ
+theo lệnh, 16 ghế, hình dạng lặng lẽ, ánh xạ quà 5 loại, chu kỳ like
+và đoạn kết + nghỉ 2 phút, sự kiện nhóm, lịch cảnh, bình chọn `!bait`,
+dòng cảm ơn, phím nóng qua máy chủ, khôi phục từ tệp, rủi ro trùng
+tên), 26 trong `test/render3d.test.js` (bố cục ghế, màu cảnh, phao
+theo phiếu, bảng HOW TO PLAY, vệ sinh nguồn), 1 kiểm thử vòng lặp
+tệp bản chụp nhanh trong `test/snapshot.test.js`, 1 kiểm thử tuyến
+máy chủ 3D trong `test/server.test.js`. Không có kiểm thử cũ nào bị
+bỏ hay sửa để đạt.
+
+### Sửa lỗi bản chụp nhanh (snapshot whitelist)
+
+`src/snapshot.js` (`loadSnapshot`) trước đây chỉ giữ các trường chung
+và loại bỏ mọi trường riêng của chế độ lake, nên một lần khởi động
+lại từ tệp thật sẽ lặng lẽ mất chu kỳ like, cảnh, phiếu bình chọn,
+dòng cảm ơn và các hình dạng — dù `GameState.persistData` →
+`restore` ở tầng bộ nhớ vẫn đúng. Nay `loadSnapshot` giữ lại các
+trường lake khi chúng có hình dạng đúng (`cycleTotal`, `cycleHit`,
+`restingUntil`, `restBank`, `sceneIndex`, `sceneStartedAt`,
+`baitVote`, `ticker`, `tickerCursor`, `lastLargeLikeEventAt`,
+`pendingFinale`, cùng `baseName` và `visualStates` của từng vị trí);
+`restore()` vẫn xác thực lại mọi giá trị (loại bỏ giá trị lệch, kẹp
+vào giới hạn). Kiểm thử hồi quy:
+`test/snapshot.test.js` — "lake file roundtrip keeps cycle, scene,
+vote, ticker and visual states" (ghi tệp thật → tải lại → khôi phục →
+xác minh chu kỳ, cảnh, phiếu, dòng cảm ơn, hình dạng, và vị trí đã ẩn
+khôi phục ẩn ngay lập tức). Tệp bản chụp nhanh vẫn không bao giờ chứa
+id người dùng (đã khẳng định trong kiểm thử).
+
+### Tuyến máy chủ mới
+
+`src/server.js` thêm các tuyến tĩnh: `/render3d.js`,
+`/vendor/three.module.js`, `/vendor/three.core.js` và
+`/lake3d-config.js` (cấu hình được phục vụ để lớp phủ trình duyệt
+import trực tiếp). Các tuyến cũ không đổi.
+
+### Hai điểm khác biệt trong cách nối dây (deviation)
+
+1. **Bản sao cấu hình mặc định trong renderer.** `public/render3d.js`
+   có một `DEFAULT_CONFIG` — bản sao của một phần `LAKE_3D` /
+   `SCENE_PALETTES` / `HOW_TO_PLAY` mà renderer cần — để dùng trực
+   tiếp và trong kiểm thử. Lớp phủ trình duyệt luôn truyền cấu hình
+   thật đã import vào `createLakeRenderer`; `src/lake3d-config.js`
+   vẫn là nguồn duy nhất đáng tin cậy. Kiểm thử ghim bản sao này bằng
+   với cấu hình thật (`test/render3d.test.js`: `DEFAULT_CONFIG`
+   khớp `SCENES`, `SCENE_PALETTES` và `HOW_TO_PLAY`).
+2. **Cách overlay import render3d.js.** `public/overlay.js` import
+   tĩnh từ `./render3d.js` cả `createLakeRenderer` lẫn các hàm trợ
+   giúp thuần túy (`anglerPosition`, `sceneColorsAt`, `baitColorFor`,
+   `meterFillFraction`, `tickerText`, `toastText`,
+   `howToPlayBoardData`) — không chỉ các hàm trợ giúp. Riêng THREE
+   thì không import tĩnh: `overlay.js` tải động
+   `./vendor/three.module.js` và truyền THREE vào
+   `createLakeRenderer`; `render3d.js` không bao giờ import THREE
+   (THREE được tiêm vào), và không import renderer 2D. (Ghi chú này
+   sửa lại cách diễn đạt "chỉ import các hàm trợ giúp" trong bản mô
+   tả công việc — mã thực tế import cả `createLakeRenderer`.)
+
+### Rủi ro trùng tên còn tồn tại (đã ghi trong README)
+
+Kiểm thử `RESIDUAL SAME-NAME RISK` trong
+`test/gameState3d.test.js` ghi lại hành vi đã biết: sau khi khởi động
+lại, một người xem khác cùng tên hiển thị sẽ gắn vào vị trí đã khôi
+phục của người đã ẩn tên, thừa hưởng trạng thái ẩn, và lần `!hide`
+tiếp theo của họ sẽ hiện vị trí đó lên. Đây là hành vi đã ghi, không
+phải lỗi chưa sửa; README mô tả đầy đủ.
+
+### Soak cho bản 3D
+
+Chạy 15 phút ngày 2026-11-19 (`scripts/soak3d.js`, bắt đầu 02:11 UTC):
+máy chủ thật + trạng thái lake3D + bộ điều hợp mô phỏng + máy khách
+overlay WebSocket + trình kết xuất 3D chạy bằng THREE giả (stub) và
+ngữ cảnh WebGL giả — đo chi phí JavaScript, **không phải** hiệu năng
+GPU của trình duyệt hay tải khi OBS đang mã hoá. Kết quả đầy đủ trong
+`soak-report-3d.json`.
+
+- 4.493 sự kiện tiêm vào, 14.179 sự kiện nhận (gồm các đợt bùng nổ
+  follow), 5.234 tin nhắn WebSocket, 25.516 khung hình.
+- Chi phí khung hình (JS, stub): trung bình 0,12 ms, p95 0,18 ms,
+  tối đa 18,53 ms.
+- Bộ nhớ: RSS 67,5 → 60,8 MB; heap 10,3 → 12,9 MB; các mẫu mỗi phút
+  dao động 11–15 MB, không tăng đơn điệu — không có dấu hiệu rò rỉ.
+- Sự kiện ambient nổ 114 lần (trung bình ~1 lần/7,9 giây, đúng mục
+  tiêu ~8 giây). Chất lượng ở tầng 0 suốt 15 phút (không cần hạ cấp),
+  60 hạt.
+- Trình kết xuất được huỷ + tạo lại một lần ở phút 8 (kiểm thử vòng
+  đời dispose/re-init): thành công; tài nguyên stub được giải phóng
+  (62 geometry, 53 material, 5 instanced, 1 renderer).
+- Cuối soak: 16/16 ghế đầy, 12/16 cần thủ đã có hình dạng; chu kỳ
+  like 11.330, tổng like 58.771, cảnh số 1 (buổi trưa), lựa chọn
+  `!bait` đang thắng là worm, dòng cảm ơn đã chạy tới 134/180 tên.
+  Các hoạt ảnh đã phát: follow 16, command 432, gift 166,
+  gift-scene 713, school 12 (sự kiện nhóm đã nổ), finale 5, toast
+  131, ticker 6. Lưu bản chụp nhanh 1.330 lần.
+
+Hai quan sát dưới lưu lượng dồn dập của soak (khoảng 3.900 like/phút
+và các đợt 120 follow cùng lúc — cao hơn nhiều so với live thật; không
+phải lỗi sập, mà là hai quy tắc tương tác với nhau):
+
+- **Chu kỳ like vượt mốc 1.200.** Sau mỗi lần nghỉ 2 phút, số like
+  tích trong lúc nghỉ trở thành chu kỳ mới (đã thiết kế như vậy); nếu
+  số tích đó đã vượt 1.200, đoạn kết (finale) phải chờ đủ 3 phút kể
+  từ đoạn kết trước (giới hạn sự kiện lớn), nên chu kỳ tiếp tục tăng
+  tới ~10.000 trước khi nghỉ. Chu kỳ vẫn đặt lại sau mỗi lần nghỉ
+  (5 đoạn kết trong 15 phút). Ở tốc độ like thực tế, mức vượt sẽ nhỏ.
+- **Dòng cảm ơn bị chèn ép khi bùng nổ follow.** Chỉ 6/≈45 hoạt ảnh
+  ticker tới được máy khách overlay; phần còn lại bị các follow ưu
+  tiên cao đẩy khỏi hàng đợi (chính sách loại bỏ cũ nhất — hoạt động
+  đúng thiết kế). Phía máy chủ vẫn theo dõi đúng (con trỏ 134/180).
+  Ở tốc độ thực tế dòng cảm ơn sẽ chạy qua được; nếu kiểm thử live
+  thật cho thấy dòng cảm ơn đứng yên trong lúc bùng nổ follow, cân
+  nhắc giữ một chỗ riêng cho ticker trong hàng đợi.
+- Hàng đợi đã loại 8.207 mục dưới các đợt bùng nổ (chủ yếu là các
+  nhịp ambient/thước ưu tiên thấp bị follow ưu tiên cao đẩy ra) —
+  đúng chính sách loại bỏ; không có trùng lặp, không vượt giới hạn
+  tốc độ, không tạm dừng nào.
+
+### CHƯA kiểm thử (bản 3D)
+
+- **Hiển thị thật trên trình duyệt/OBS.** Chưa xem cảnh 3D trong một
+  tab trình duyệt thật hay trong OBS, chưa xác minh cửa sổ camera,
+  bảng HOW TO PLAY, dòng cảm ơn và chân trang ở 1080×1920.
+- **Tải GPU thật khi mã hóa (encoding).** Chưa đo tải GPU/CPU của
+  WebGL trong khi OBS đang mã hóa buổi phát.
+- **Soak 8 giờ.** Chưa chạy; xem mục Soak cho bản 3D ở trên.
+- **npm audit.** Vẫn bị chặn trong môi trường build (403
+  `policy_denied`); chạy trên máy của chính streamer (xem ở trên).
+- **Nghe SFX bằng tai.** Bốn hiệu ứng vẫn chỉ được chọn theo tên tệp
+  và phân tích mức âm lượng, chưa nghe thử bằng tai.
+- **WebGL mất ngữ cảnh trong trình duyệt thật.** Mã có xử lý mất/khôi
+  phục ngữ cảnh (chuyển sang cảnh tĩnh rồi quay lại 3D), nhưng chưa
+  thử trong trình duyệt thật.

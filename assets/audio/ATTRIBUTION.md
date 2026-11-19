@@ -28,7 +28,7 @@ giảm âm (fade-out) 2.5 s.
 Dòng ghi công cho từng bản nhạc, như bên cấp phép yêu cầu:
 
 > "<Track>" — Kevin MacLeod (incompetech.com), licensed under CC BY 3.0
-> (https://creativecommons.org/licenses/by/3.0/). Excerpted and level-adjusted
+> (https://creativecommons.org/licenses/by/3.0/). Excerpted and loudness-adjusted
 > for use as a background-music loop; see MANIFEST.json.
 
 ## Hiệu ứng âm thanh — Kenney, Interface Sounds 1.0

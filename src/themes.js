@@ -54,7 +54,6 @@ export const THEMES = {
       'sun-hat': { label: 'Sun hat for the angler', target: 'spot' },
       flag: { label: 'Boat flag', target: 'spot' },
       'fish-charm': { label: 'Fish charm', target: 'spot' },
-      bobber: { label: 'Bobber beside the boat', target: 'spot' },
     },
     giftDefault: 'lantern',
     giftKeywords: [
@@ -63,7 +62,6 @@ export const THEMES = {
       ['star', 'lantern'], ['moon', 'lantern'], ['light', 'lantern'], ['fire', 'lantern'],
       ['cap', 'sun-hat'], ['hat', 'sun-hat'], ['crown', 'sun-hat'],
       ['fish', 'fish-charm'], ['shark', 'fish-charm'], ['whale', 'fish-charm'],
-      ['ball', 'bobber'], ['balloon', 'bobber'], ['ring', 'bobber'],
     ],
     palette: {
       skyTop: '#1d3a5f', skyBottom: '#f7b267', skyTopLate: '#3a6ea5', skyBottomLate: '#ffd9a0', sun: '#ffd97a',

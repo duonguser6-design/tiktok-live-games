@@ -1,0 +1,184 @@
+{
+  "minutes": 15,
+  "startedAt": "2026-11-19T02:11:08.403Z",
+  "renderer": "3d-headless-stub",
+  "eventsInjected": 4493,
+  "wsMessagesReceived": 5234,
+  "animationKinds": {
+    "gift-scene": 713,
+    "follow": 16,
+    "gift": 166,
+    "school": 12,
+    "finale": 5,
+    "command": 432,
+    "toast": 131,
+    "ticker": 6
+  },
+  "framesRendered": 25516,
+  "frameMs": {
+    "avg": 0.119,
+    "p95": 0.18,
+    "max": 18.529
+  },
+  "rssStartMB": 67.5,
+  "rssEndMB": 60.8,
+  "heapStartMB": 10.3,
+  "heapEndMB": 12.9,
+  "snapshotSaves": 1330,
+  "recreates": 1,
+  "ambientFired": 114,
+  "qualityTier": 0,
+  "particleCount": 60,
+  "effectCounts": {
+    "small": 1,
+    "large": 0,
+    "gift": 1,
+    "queued": 1,
+    "dropped": 0
+  },
+  "stubDisposed": {
+    "geometries": 62,
+    "materials": 53,
+    "textures": 0,
+    "instanced": 5,
+    "renderer": 1
+  },
+  "finalSpots": 16,
+  "finalCycleTotal": 11330,
+  "finalMeterTotal": 58771,
+  "finalSceneIndex": 1,
+  "finalBaitOption": "worm",
+  "finalTickerCursor": 134,
+  "finalTickerEntries": 180,
+  "anglersOccupied": 16,
+  "anglersWithStates": 12,
+  "counters": {
+    "received": 14179,
+    "applied": 3306,
+    "duplicates": 0,
+    "droppedPaused": 0,
+    "droppedRateLimit": 0,
+    "droppedQueue": 8207,
+    "ignoredUnknownCommand": 265,
+    "ignoredCooldown": 16,
+    "ignoredPending": 31,
+    "ignoredDuplicateFollow": 431,
+    "streakSkipped": 1766,
+    "ignoredShareJoin": 0,
+    "overflowToasts": 8364
+  },
+  "samples": [
+    {
+      "minute": 0,
+      "rssMB": 67.5234375,
+      "heapMB": 10.2965087890625,
+      "injected": 0,
+      "frames": 0
+    },
+    {
+      "minute": 1,
+      "rssMB": 84.046875,
+      "heapMB": 14.291465759277344,
+      "injected": 299,
+      "frames": 1683
+    },
+    {
+      "minute": 2,
+      "rssMB": 85.703125,
+      "heapMB": 13.435111999511719,
+      "injected": 599,
+      "frames": 3395
+    },
+    {
+      "minute": 3,
+      "rssMB": 86.6875,
+      "heapMB": 13.987281799316406,
+      "injected": 898,
+      "frames": 5090
+    },
+    {
+      "minute": 4,
+      "rssMB": 87.52734375,
+      "heapMB": 14.421409606933594,
+      "injected": 1198,
+      "frames": 6793
+    },
+    {
+      "minute": 5,
+      "rssMB": 88.4140625,
+      "heapMB": 12.372222900390625,
+      "injected": 1497,
+      "frames": 8489
+    },
+    {
+      "minute": 6,
+      "rssMB": 81.94140625,
+      "heapMB": 11.427108764648438,
+      "injected": 1797,
+      "frames": 10184
+    },
+    {
+      "minute": 7,
+      "rssMB": 81.828125,
+      "heapMB": 12.002220153808594,
+      "injected": 2097,
+      "frames": 11902
+    },
+    {
+      "minute": 8,
+      "rssMB": 75.828125,
+      "heapMB": 12.057426452636719,
+      "injected": 2396,
+      "frames": 13605
+    },
+    {
+      "minute": 9,
+      "rssMB": 79.609375,
+      "heapMB": 13.119056701660156,
+      "injected": 2696,
+      "frames": 15317
+    },
+    {
+      "minute": 10,
+      "rssMB": 79.76171875,
+      "heapMB": 14.288505554199219,
+      "injected": 2995,
+      "frames": 17013
+    },
+    {
+      "minute": 11,
+      "rssMB": 80.01171875,
+      "heapMB": 13.890357971191406,
+      "injected": 3295,
+      "frames": 18710
+    },
+    {
+      "minute": 12,
+      "rssMB": 80.58984375,
+      "heapMB": 14.362579345703125,
+      "injected": 3594,
+      "frames": 20418
+    },
+    {
+      "minute": 13,
+      "rssMB": 81.21484375,
+      "heapMB": 15.05755615234375,
+      "injected": 3894,
+      "frames": 22120
+    },
+    {
+      "minute": 14,
+      "rssMB": 81.80078125,
+      "heapMB": 12.412460327148438,
+      "injected": 4193,
+      "frames": 23810
+    },
+    {
+      "minute": 15,
+      "rssMB": 60.80078125,
+      "heapMB": 12.918685913085938,
+      "injected": 4493,
+      "frames": 25516
+    }
+  ]
+}

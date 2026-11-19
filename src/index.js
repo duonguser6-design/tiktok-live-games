@@ -62,6 +62,7 @@ export async function main(env = process.env) {
     theme: config.theme,
     streamerName: config.username,
     extraBannedWords: config.extraBannedWords,
+    lake3D: true,
   });
   if (snapshot) {
     gameState.restore(snapshot);
