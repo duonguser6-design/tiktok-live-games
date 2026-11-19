@@ -1,0 +1,24 @@
+# Xuất (export) các biến này trong shell của bạn trước khi khởi động (không bắt buộc).
+# Không có gì trong gói này nạp tệp .env.
+# CHỈ tên người dùng công khai. Không bao giờ điền cookie phiên (session cookie), token hay mật khẩu
+# vào đây hay bất cứ nơi nào khác — trò chơi này không có đăng nhập và không bao giờ dùng chúng.
+
+# MODE: simulator (mặc định), manual hoặc live
+MODE=simulator
+
+# Tên người dùng TikTok công khai cho chế độ live, có hoặc không có @. Chỉ bắt buộc
+# khi MODE=live. Bộ điều hợp live (live adapter) CHƯA ĐƯỢC KIỂM CHỨNG (xem README).
+# TIKTOK_USERNAME=yourname
+
+# Cổng nội bộ cho lớp phủ (overlay) + bảng điều khiển (chỉ 127.0.0.1).
+PORT=3000
+
+# Chủ đề khởi đầu: sunrise-lake, firefly-garden, starlight-observatory,
+# cozy-corner-cafe, balloon-sky.
+THEME=sunrise-lake
+
+# Thư mục lưu ảnh chụp phiên làm việc cục bộ (chỉ tên hiển thị + vị trí).
+# DATA_DIR=./data
+
+# Các từ cấm bổ sung cho tên hiển thị, phân tách bằng dấu phẩy (được thêm vào danh sách khởi đầu).
+# BANNED_WORDS=

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Game Overlay</title>
+<style>
+  html, body { margin: 0; padding: 0; background: transparent; overflow: hidden; }
+  body { display: flex; align-items: flex-start; justify-content: center; }
+  canvas { width: min(100vw, 56.25vh); height: auto; display: block; }
+</style>
+</head>
+<body>
+<canvas id="scene" width="1080" height="1920" aria-label="Interactive live game scene"></canvas>
+<noscript><p style="color:#fff;font-family:system-ui">This overlay needs JavaScript.</p></noscript>
+<script type="module" src="./overlay.js"></script>
+</body>
+</html>

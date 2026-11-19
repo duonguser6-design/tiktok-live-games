@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Games — Control Panel</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: #0e1420; color: #eef2f7; }
+  header, main { max-width: 980px; margin: 0 auto; padding: 16px; }
+  header { border-bottom: 1px solid #263248; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  h2 { font-size: 17px; margin: 0 0 10px; }
+  p { color: #b9c4d4; line-height: 1.5; }
+  .card { background: #16202f; border: 1px solid #263248; border-radius: 12px; padding: 16px; margin: 14px 0; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button { background: #2a3a55; color: #fff; border: 1px solid #3c5175; border-radius: 8px; padding: 9px 14px; font-size: 14px; cursor: pointer; }
+  button:hover { background: #35496b; }
+  button.active { background: #3f6d8e; border-color: #6aa5c8; }
+  button.danger { background: #7a2430; border-color: #a83a48; }
+  button.danger:hover { background: #93303d; }
+  button:disabled { opacity: 0.5; cursor: default; }
+  input, select { background: #0e1420; color: #fff; border: 1px solid #3c5175; border-radius: 8px; padding: 9px 10px; font-size: 14px; }
+  input[type="range"] { padding: 0; accent-color: #6aa5c8; width: 200px; }
+  #btn-mute { font-size: 16px; padding: 12px 20px; }
+  #btn-mute.muted { background: #7a2430; border-color: #a83a48; }
+  label { font-size: 13px; color: #b9c4d4; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .status { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+  .stat { background: #0e1420; border-radius: 8px; padding: 10px 12px; }
+  .stat b { display: block; font-size: 20px; }
+  .stat span { font-size: 12px; color: #b9c4d4; }
+  #log { font-family: ui-monospace, monospace; font-size: 13px; background: #0a0f18; border-radius: 8px; padding: 10px 12px; max-height: 220px; overflow: auto; white-space: pre-wrap; }
+  .warn { background: #3a2a12; border: 1px solid #8a6a2a; border-radius: 8px; padding: 10px 12px; color: #ffe1a1; }
+  a { color: #9bc8ff; }
+  code { background: #0a0f18; padding: 2px 6px; border-radius: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Live Games — Control Panel</h1>
+  <p>Policy-cautious local games. The creator must stay on camera while the overlay runs. No prizes, no currency, no randomness tied to gifts. The live event feed uses an unofficial interface TikTok's terms prohibit — see the README risk consent before going live.</p>
+</header>
+<main>
+  <section class="card">
+    <h2>Status</h2>
+    <div class="status">
+      <div class="stat"><b id="st-mode">—</b><span>Mode</span></div>
+      <div class="stat"><b id="st-theme">—</b><span>Theme</span></div>
+      <div class="stat"><b id="st-conn">—</b><span>Connection</span></div>
+      <div class="stat"><b id="st-spots">0</b><span>Spots on screen</span></div>
+      <div class="stat"><b id="st-meter">0</b><span>Shared meter</span></div>
+      <div class="stat"><b id="st-queue">0</b><span>Queued animations</span></div>
+    </div>
+    <p id="st-stage"></p>
+    <p>Overlay URL: <a id="overlay-link" href="/overlay" target="_blank" rel="noopener">/overlay</a> — add it as an OBS Browser Source (1080×1920), with the camera source below it so the camera shows through the window.</p>
+  </section>
+
+  <section class="card">
+    <h2>Sound &amp; motion</h2>
+    <p id="audio-missing" class="warn" style="display:none">No audio files were found on this server, so the overlay is silent. Run <code>scripts/fetch-audio.sh</code> (GitHub clone) or use the Drive package, which ships the audio files directly, then restart the server.</p>
+    <div class="row">
+      <button id="btn-mute">Mute sound</button>
+      <div class="field"><label for="bgm-volume">Background music volume: <span id="bgm-volume-val">30%</span></label><input id="bgm-volume" type="range" min="0" max="100" step="1" value="30"></div>
+      <div class="field"><label for="sfx-volume">Sound effects volume: <span id="sfx-volume-val">70%</span></label><input id="sfx-volume" type="range" min="0" max="100" step="1" value="70"></div>
+      <label><input type="checkbox" id="motion-toggle"> Reduced motion (gentler movement, fewer particles)</label>
+    </div>
+    <p>Each game has its own calm background loop; effects play when someone arrives, a gift lands, a scene beat is reached, or a command is used. Browsers start sound only after interaction, so click anywhere in the browser source once during rehearsal — the overlay retries on every event. The operating system's reduced-motion preference is honored automatically.</p>
+  </section>
+
+  <section class="card">
+    <h2>Choose a game</h2>
+    <div class="row" id="theme-buttons"></div>
+    <p id="theme-desc"></p>
+  </section>
+
+  <section class="card">
+    <h2>Event source</h2>
+    <div class="row">
+      <button data-mode="simulator">Simulator</button>
+      <button data-mode="manual">Manual / mod only</button>
+      <button data-mode="live">Live TikTok feed</button>
+    </div>
+    <p class="warn" style="margin-top:12px">Live feed is <b>UNVERIFIED</b>: it has never been tested against a real TikTok LIVE session. It is read-only and needs only the public username. Signing for the live feed goes through Euler Stream, a third-party service: if it is down, rate-limited, or changes, the feed stops. Never paste cookies or tokens anywhere — this game has no place to paste them, by design.</p>
+  </section>
+
+  <section class="card">
+    <h2>Scene controls</h2>
+    <div class="row">
+      <button id="btn-pause">Pause</button>
+      <button id="btn-resume">Resume</button>
+      <button id="btn-kill" class="danger">Kill-switch (stops event intake)</button>
+      <button id="btn-reset" class="danger">Reset session</button>
+      <label><input type="checkbox" id="demo-toggle"> Auto demo traffic (simulator)</label>
+    </div>
+    <p>The kill-switch stops event intake too, not just the picture. Resume restarts intake. Reset clears spots, the meter, and the local snapshot.</p>
+  </section>
+
+  <section class="card">
+    <h2>Simulator</h2>
+    <p>Fake events for rehearsal. They behave exactly like live events (same filters, cooldowns, and queue).</p>
+    <div class="row">
+      <div class="field"><label for="sim-name">Viewer name</label><input id="sim-name" value="Maya" maxlength="48"></div>
+      <div class="field"><label>&nbsp;</label><button id="sim-follow">Fake follow</button></div>
+      <div class="field"><label for="sim-command">Command</label><select id="sim-command"></select></div>
+      <div class="field"><label>&nbsp;</label><button id="sim-comment">Send command</button></div>
+      <div class="field"><label for="sim-likes">Likes</label><input id="sim-likes" type="number" value="25" min="1" max="1000"></div>
+      <div class="field"><label>&nbsp;</label><button id="sim-like">Send likes</button></div>
+      <div class="field"><label for="sim-gift">Gift</label><select id="sim-gift"></select></div>
+      <div class="field"><label>&nbsp;</label><button id="sim-gift-btn">Send gift</button></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Manual / mod triggers</h2>
+    <p>Drive the game by hand — the fallback path that needs no TikTok connection. A moderator at this machine can welcome people and trigger scenes live.</p>
+    <div class="row">
+      <div class="field"><label for="man-name">Viewer name</label><input id="man-name" value="Guest" maxlength="48"></div>
+      <div class="field"><label>&nbsp;</label><button id="man-follow">Add follow spot</button></div>
+      <div class="field"><label for="man-command">Command</label><select id="man-command"></select></div>
+      <div class="field"><label>&nbsp;</label><button id="man-comment">Send command</button></div>
+      <div class="field"><label for="man-likes">Likes</label><input id="man-likes" type="number" value="25" min="1" max="1000"></div>
+      <div class="field"><label>&nbsp;</label><button id="man-like">Add likes</button></div>
+      <div class="field"><label for="man-gift">Gift</label><select id="man-gift"></select></div>
+      <div class="field"><label>&nbsp;</label><button id="man-gift-btn">Add gift effect</button></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Recent activity</h2>
+    <p>Counts and filtered names only. Comment text and viewer ids are never shown here.</p>
+    <div id="log"></div>
+  </section>
+
+  <section class="card">
+    <h2>On-screen wording</h2>
+    <p id="disclosures"></p>
+    <p>Commands and gift effects are fixed per game and listed in the README. If any wording on screen ever asks viewers to follow, gift, or tap, that is a bug — stop the game and report it.</p>
+  </section>
+</main>
+<script type="module" src="./control.js"></script>
+</body>
+</html>
